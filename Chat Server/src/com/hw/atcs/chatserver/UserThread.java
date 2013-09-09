@@ -2,10 +2,12 @@ package com.hw.atcs.chatserver;
 
 import java.net.*;
 import java.io.*;
+import java.util.ArrayDeque;
 
 public class UserThread implements Runnable {
 	
 	private String name;
+	private String message;
 	protected Socket socket;
 	protected PrintWriter out;
 	protected BufferedReader in;
@@ -16,7 +18,6 @@ public class UserThread implements Runnable {
             this.out = new PrintWriter(this.socket.getOutputStream(), true);
             this.in  = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             
-            /* Say hi to the client */
             this.out.println("Username: ");
             name = this.in.readLine();
         } catch (IOException e) {
@@ -24,7 +25,13 @@ public class UserThread implements Runnable {
         }
 	}
 	public void run() {
-		// TODO Auto-generated method stub
-		
+		while (true) {
+			try {
+				String message = this.in.readLine();
+				if 
+			} catch (IOException e) {
+				//stuff
+			}
+		}
 	}
 }
