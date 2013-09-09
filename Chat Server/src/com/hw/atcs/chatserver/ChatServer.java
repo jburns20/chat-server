@@ -1,5 +1,5 @@
 package com.hw.atcs.chatserver;
 
-public class Main {
+public class ChatServer {
 
 }
