@@ -28,7 +28,6 @@ public class UserThread implements Runnable {
 		while (true) {
 			try {
 				String message = this.in.readLine();
-				if 
 			} catch (IOException e) {
 				//stuff
 			}
