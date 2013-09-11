@@ -47,10 +47,15 @@ public class ChatServer {
 		}
 	}
 	
-	public synchronized void sendMessage(String message) {
+	public synchronized void sendMessage(UserThread sender, String message) {
+		message=sender.getName()+": "+message;
 		for(UserThread t:this.userThreads) {
-			
+			t.receiveMessage(message);
 		}
+	}
+	
+	public synchronized void removeUserThread(UserThread thread) {
+		this.userThreads.remove(thread);
 	}
 }
 

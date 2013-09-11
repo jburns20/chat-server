@@ -32,10 +32,21 @@ public class UserThread implements Runnable {
 					name = this.in.readLine();
 				} else {
 					String message = this.in.readLine();
+					chatServer.sendMessage(this, message);
 				}
 			} catch (IOException e) {
-				//stuff
+				e.printStackTrace();
+				chatServer.removeUserThread(this);
+				System.exit(1);
 			}
 		}
+	}
+	
+	public void receiveMessage(String message) {
+		this.out.println(message);
+	}
+	
+	public String getName() {
+		return name;
 	}
 }
