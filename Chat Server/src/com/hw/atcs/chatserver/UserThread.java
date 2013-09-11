@@ -7,7 +7,6 @@ import java.util.ArrayDeque;
 public class UserThread implements Runnable {
 	
 	private String name;
-	private String message;
 	protected Socket socket;
 	protected PrintWriter out;
 	protected BufferedReader in;
@@ -18,8 +17,6 @@ public class UserThread implements Runnable {
             this.out = new PrintWriter(this.socket.getOutputStream(), true);
             this.in  = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             
-            this.out.println("Username: ");
-            name = this.in.readLine();
         } catch (IOException e) {
             System.out.println("IOException: " + e);
         }
@@ -27,7 +24,13 @@ public class UserThread implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-				String message = this.in.readLine();
+				if (name == null) {
+					this.out.println("Welcome to the Chat Server");
+					this.out.println("Enter your username to begin.");
+					name = this.in.readLine();
+				} else {
+					String message = this.in.readLine();
+				}
 			} catch (IOException e) {
 				//stuff
 			}
