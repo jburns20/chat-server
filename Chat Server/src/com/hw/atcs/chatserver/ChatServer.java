@@ -37,13 +37,19 @@ public class ChatServer {
 		//now run the server
 		while(true) {
 			try {
-				UserThread accepted=new UserThread(listener.accept());
+				UserThread accepted=new UserThread(this, listener.accept());
 				this.userThreads.addLast(accepted);
 				new Thread(accepted).start();
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.out.println("Could not accept the request.");
 			}
+		}
+	}
+	
+	public synchronized void sendMessage(String message) {
+		for(UserThread t:this.userThreads) {
+			
 		}
 	}
 }

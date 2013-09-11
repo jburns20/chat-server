@@ -8,11 +8,13 @@ public class UserThread implements Runnable {
 	
 	private String name;
 	protected Socket socket;
+	protected ChatServer chatServer;
 	protected PrintWriter out;
 	protected BufferedReader in;
 
-	public UserThread(Socket s) {
+	public UserThread(ChatServer server, Socket s) {
 		socket = s;
+		chatServer=server;
 		try {
             this.out = new PrintWriter(this.socket.getOutputStream(), true);
             this.in  = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
