@@ -38,6 +38,7 @@ public class ChatServer {
 		while(true) {
 			try {
 				UserThread accepted=new UserThread(this, listener.accept());
+				sendMessage(null, accepted.getName()+" has joined the chat server.");
 				this.userThreads.addLast(accepted);
 				new Thread(accepted).start();
 			} catch (IOException e) {
@@ -48,7 +49,8 @@ public class ChatServer {
 	}
 	
 	public synchronized void sendMessage(UserThread sender, String message) {
-		message=sender.getName()+": "+message;
+		if(sender!=null)
+			message=sender.getName()+": "+message;
 		for(UserThread t:this.userThreads) {
 			t.receiveMessage(message);
 		}
@@ -56,6 +58,7 @@ public class ChatServer {
 	
 	public synchronized void removeUserThread(UserThread thread) {
 		this.userThreads.remove(thread);
+		sendMessage(null, thread.getName()+" has left.");
 	}
 }
 
