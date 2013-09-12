@@ -52,13 +52,16 @@ public class UserThread implements Runnable {
 						out.println("Nickname changed to "+name+".");
 					}
 					else if(command.equals("disconnect")) {
-						if(command.indexOf(" ")!=-1)
+						if(message.indexOf(" ") != -1)
 							chatServer.sendMessage(null, name+" is disconnecting: "+command.substring(command.indexOf(" ")+1));
 						chatServer.removeUserThread(this);
+						out.close();
+						in.close();
+						return;
 					}
-					return;
+				} else {
+					chatServer.sendMessage(this, message);
 				}
-				chatServer.sendMessage(this, message);
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.out.println("There was a problem reading your message. Please try again.");
