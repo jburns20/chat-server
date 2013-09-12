@@ -53,7 +53,7 @@ public class UserThread implements Runnable {
 					}
 					else if(command.equals("disconnect")) {
 						if(message.indexOf(" ") != -1)
-							chatServer.sendMessage(null, name+" is disconnecting: "+command.substring(command.indexOf(" ")+1));
+							chatServer.sendMessage(null, name+" is disconnecting: "+message.substring(command.length()+2));
 						chatServer.removeUserThread(this);
 						out.close();
 						in.close();
