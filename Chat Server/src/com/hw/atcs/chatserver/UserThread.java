@@ -25,12 +25,12 @@ public class UserThread implements Runnable {
 	public void run() {
 		this.out.println("Welcome to the Chat Server!");
 		do {
-			this.out.println("Enter your username to begin.");
+			this.out.println("Enter your nickname to begin.");
 			try {
 				name = this.in.readLine();
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("There was a problem reading your username. Please try again.");
+				System.out.println("There was a problem reading your nickname. Please try again.");
 			}
 		} while (name == null);
 		chatServer.addUserThread(this);
@@ -41,6 +41,21 @@ public class UserThread implements Runnable {
 				String message = this.in.readLine();
 				if(message==null) {
 					chatServer.removeUserThread(this);
+					return;
+				}
+				else if(message.equals(""))
+					return;
+				else if(message.charAt(0)=='/') {
+					String command=message.substring(1, message.indexOf(" ")).toLowerCase();
+					if(command.equals("nick")) {
+						name=message.substring(command.length()+2);
+						out.println("Nickname changed to "+name+".");
+					}
+					else if(command.equals("disconnect")) {
+						if(command.indexOf(" ")!=-1)
+							chatServer.sendMessage(null, name+" is disconnecting: "+command.substring(command.indexOf(" ")+1));
+						chatServer.removeUserThread(this);
+					}
 					return;
 				}
 				chatServer.sendMessage(this, message);
