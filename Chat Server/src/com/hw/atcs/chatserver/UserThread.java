@@ -34,6 +34,7 @@ public class UserThread implements Runnable {
 			}
 		} while (name == null);
 		chatServer.addUserThread(this);
+		this.out.println("Welcome, " + name + "!");
 		//Extra spacing, etc. for username separation would go here.
 		while (true) {
 			try {
@@ -42,7 +43,7 @@ public class UserThread implements Runnable {
 					chatServer.removeUserThread(this);
 					return;
 				}
-				chatServer.sendMessage(this, message+"\n");
+				chatServer.sendMessage(this, message);
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.out.println("There was a problem reading your message. Please try again.");
