@@ -20,12 +20,10 @@ public class ChatServer {
 		new ChatServer(port);
 	}
 	
-	private int port;
 	private LinkedList<UserThread> userThreads;
 	private ServerSocket listener;
 	
 	public ChatServer(int port) {
-		this.port = port;
 		this.userThreads = new LinkedList<UserThread>();
 		try {
 			this.listener = new ServerSocket(port);
@@ -38,8 +36,6 @@ public class ChatServer {
 		while(true) {
 			try {
 				UserThread accepted=new UserThread(this, listener.accept());
-				sendMessage(null, accepted.getName()+" has joined the chat server.");
-				this.userThreads.addLast(accepted);
 				new Thread(accepted).start();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -54,6 +50,11 @@ public class ChatServer {
 		for(UserThread t:this.userThreads) {
 			t.receiveMessage(message);
 		}
+	}
+	
+	public synchronized void addUserThread(UserThread thread) {
+		this.userThreads.addLast(thread);
+		sendMessage(null, thread.getName()+" has joined the chat server.");
 	}
 	
 	public synchronized void removeUserThread(UserThread thread) {

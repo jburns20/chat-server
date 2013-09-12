@@ -24,28 +24,28 @@ public class UserThread implements Runnable {
 	}
 	public void run() {
 		this.out.println("Welcome to the Chat Server!");
-		this.out.println("Enter your username to begin.");
-		try {
-			name = this.in.readLine();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println("There was a problem reading your username.");
-			System.exit(1);
-		}
+		do {
+			this.out.println("Enter your username to begin.");
+			try {
+				name = this.in.readLine();
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.out.println("There was a problem reading your username. Please try again.");
+			}
+		} while (name == null);
+		chatServer.addUserThread(this);
 		//Extra spacing, etc. for username separation would go here.
 		while (true) {
 			try {
 				String message = this.in.readLine();
 				if(message==null) {
 					chatServer.removeUserThread(this);
-					System.exit(0);
+					return;
 				}
 				chatServer.sendMessage(this, message+"\n");
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("There was a problem reading your message.");
-				chatServer.removeUserThread(this);
-				System.exit(1);
+				System.out.println("There was a problem reading your message. Please try again.");
 			}
 		}
 	}
