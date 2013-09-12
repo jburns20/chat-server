@@ -48,8 +48,9 @@ public class UserThread implements Runnable {
 				else if(message.charAt(0)=='/') {
 					String command=message.substring(1, message.indexOf(" ")).toLowerCase();
 					if(command.equals("nick")) {
+						String oldName = name;
 						name=message.substring(command.length()+2);
-						out.println("Nickname changed to "+name+".");
+						chatServer.sendMessage(null, oldName + " changed their nickname to "+name+".");
 					}
 					else if(command.equals("disconnect")) {
 						if(message.indexOf(" ") != -1)
