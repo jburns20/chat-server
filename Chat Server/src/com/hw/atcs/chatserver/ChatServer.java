@@ -52,6 +52,22 @@ public class ChatServer {
 		}
 	}
 	
+	public synchronized void whisperMessage(UserThread sender, String recipient, String message) {
+		String message1 = sender.getName() + " whispers: " + message;
+		boolean delivered = false;
+		for (UserThread t : this.userThreads) {
+			if (t.getName().toLowerCase().equals(recipient.toLowerCase())) {
+				t.receiveMessage(message1);
+				delivered = true;
+			}
+		}
+		if (delivered) {
+			sender.receiveMessage("You whisper to " + recipient + ": " + message);
+		} else {
+			sender.receiveMessage("There is no user with that nickname.");
+		}
+	}
+	
 	public synchronized void addUserThread(UserThread thread) {
 		this.userThreads.addLast(thread);
 		sendMessage(null, thread.getName()+" has joined the chat server.");

@@ -27,7 +27,7 @@ public class UserThread implements Runnable {
 		do {
 			this.out.println("Enter your nickname to begin.");
 			try {
-				name = this.in.readLine();
+				name = this.in.readLine().replace(' ', '_');
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.out.println("There was a problem reading your nickname. Please try again.");
@@ -49,7 +49,7 @@ public class UserThread implements Runnable {
 					String command=message.substring(1, message.indexOf(" ")).toLowerCase();
 					if(command.equals("nick")) {
 						String oldName = name;
-						name=message.substring(command.length()+2);
+						name=message.substring(command.length()+2).replace(' ', '_');
 						chatServer.sendMessage(null, oldName + " changed their nickname to "+name+".");
 					}
 					else if(command.equals("disconnect")) {
@@ -59,6 +59,10 @@ public class UserThread implements Runnable {
 						out.close();
 						in.close();
 						return;
+					} else if (command.equals("whisper")) {
+						String user = message.substring(command.length()+2, message.indexOf(" ", command.length()+2));
+						String text = message.substring(message.indexOf(" ", command.length()+2)+1);
+						chatServer.whisperMessage(this, user, text);
 					}
 				} else {
 					chatServer.sendMessage(this, message);
