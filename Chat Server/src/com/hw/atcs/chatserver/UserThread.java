@@ -27,10 +27,12 @@ public class UserThread implements Runnable {
 		do {
 			this.out.println("Enter your nickname to begin.");
 			try {
-				name = this.in.readLine().replace(' ', '_');
+				String newName = this.in.readLine().replace(' ', '_');
+				if (!chatServer.nicknameExists(newName)) this.name = newName;
+				else out.println("Someone else is using that nickname. Please try again.");
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("There was a problem reading your nickname. Please try again.");
+				out.println("There was a problem reading your nickname. Please try again.");
 			}
 		} while (name == null);
 		chatServer.addUserThread(this);
@@ -48,9 +50,15 @@ public class UserThread implements Runnable {
 				else if(message.charAt(0)=='/') {
 					String command=message.substring(1, message.indexOf(" ")).toLowerCase();
 					if(command.equals("nick")) {
-						String oldName = name;
-						name=message.substring(command.length()+2).replace(' ', '_');
-						chatServer.sendMessage(null, oldName + " changed their nickname to "+name+".");
+						String newName=message.substring(command.length()+2).replace(' ', '_');
+						if (!chatServer.nicknameExists(newName)) {
+							chatServer.sendMessage(null, name + " changed their nickname to "+newName+".");
+							name = newName;
+						} else if (name.equals(newName)) {
+							out.println("You're already using that nickname.");
+						} else {
+							out.println("Someone else is using that nickname. Please try again.");
+						}
 					}
 					else if(command.equals("disconnect")) {
 						if(message.indexOf(" ") != -1)

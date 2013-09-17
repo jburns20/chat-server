@@ -77,5 +77,12 @@ public class ChatServer {
 		this.userThreads.remove(thread);
 		sendMessage(null, thread.getName()+" has left.");
 	}
+	
+	public synchronized boolean nicknameExists(String name) {
+		for (UserThread t : this.userThreads) {
+			if (t.getName().toLowerCase().equals(name.toLowerCase())) return false;
+		}
+		return true;
+	}
 }
 
