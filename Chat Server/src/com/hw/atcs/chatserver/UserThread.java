@@ -1,19 +1,35 @@
 package com.hw.atcs.chatserver;
 
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.awt.Color;
 import java.io.*;
 
 public class UserThread implements Runnable {
 	
 	private String name;
-	protected Socket socket;
-	protected ChatServer chatServer;
-	protected PrintWriter out;
-	protected BufferedReader in;
+	private Socket socket;
+	private ChatServer chatServer;
+	private PrintWriter out;
+	private BufferedReader in;
+	private Color color;
 
 	public UserThread(ChatServer server, Socket s) {
 		socket = s;
 		chatServer=server;
+		int[] rgb=new int[3];
+		int sum=(int)(Math.random()*200)+400;
+		ArrayList<Integer> indexes=new ArrayList<Integer>(Arrays.asList(0,1,2));
+		for(int i=0; i<2; i++) {
+			int index=indexes.get((int)(Math.random()*indexes.size()));
+			indexes.remove(new Integer(index));
+			int component=Math.min((int)(Math.random()*255), sum);
+			sum-=component;
+			rgb[index]=component;
+		}
+		rgb[indexes.get(0)]=sum;
+		color=new Color(rgb[0], rgb[1], rgb[2]);
 		try {
             this.out = new PrintWriter(this.socket.getOutputStream(), true);
             this.in  = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
@@ -22,6 +38,7 @@ public class UserThread implements Runnable {
         	e.printStackTrace();
         }
 	}
+	
 	public void run() {
 		this.out.println("Welcome to the Chat Server!");
 		do {
@@ -88,5 +105,9 @@ public class UserThread implements Runnable {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 }

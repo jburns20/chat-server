@@ -3,8 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
+
 import java.net.Socket;
 
 public class ChatClient extends JFrame implements ActionListener {
@@ -14,7 +15,7 @@ public class ChatClient extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = -572467277434891252L;
 	// GUI stuff
-    private JTextArea  enteredText = new JTextArea(10, 32);
+    private JTextPane  enteredText = new JTextPane();
     private JTextField typedText   = new JTextField(32);
 
     // socket for connection to chat server
@@ -77,7 +78,7 @@ public class ChatClient extends JFrame implements ActionListener {
     public void listen() {
         String s;
         while ((s = in.readLine()) != null) {
-            enteredText.insert(s + "\n", enteredText.getText().length());
+            enteredText.setText(enteredText.getText()+s + "\n");
             enteredText.setCaretPosition(enteredText.getText().length());
         }
         out.close();

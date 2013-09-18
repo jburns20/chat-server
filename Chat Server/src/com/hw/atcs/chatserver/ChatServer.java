@@ -1,6 +1,7 @@
 package com.hw.atcs.chatserver;
 
 import java.util.LinkedList;
+import java.awt.Color;
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -45,8 +46,10 @@ public class ChatServer {
 	}
 	
 	public synchronized void sendMessage(UserThread sender, String message) {
-		if(sender!=null)
-			message=sender.getName()+": "+message;
+		if(sender!=null) {
+			Color c=sender.getColor();
+			message="<p style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'><strong>" + sender.getName() + ":</strong> " + message + "</p>";
+		}
 		for(UserThread t:this.userThreads) {
 			t.receiveMessage(message);
 		}
