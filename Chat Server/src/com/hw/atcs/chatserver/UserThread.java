@@ -28,7 +28,8 @@ public class UserThread implements Runnable {
 			sum-=component;
 			rgb[index]=component;
 		}
-		rgb[indexes.get(0)]=Math.max(255, sum);
+		rgb[indexes.get(0)]=Math.min(255, sum);
+		System.out.println(rgb[0] + " " + rgb[1] + " " + rgb[2]);
 		color=new Color(rgb[0], rgb[1], rgb[2]);
 		try {
             this.out = new PrintWriter(this.socket.getOutputStream(), true);
