@@ -83,9 +83,9 @@ public class ChatServer {
 	
 	public synchronized boolean nicknameExists(String name) {
 		for (UserThread t : this.userThreads) {
-			if (t.getName().toLowerCase().equals(name.toLowerCase())) return false;
+			if (t.getName().toLowerCase().equals(name.toLowerCase())) return true;
 		}
-		return true;
+		return false;
 	}
 }
 
