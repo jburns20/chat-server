@@ -24,11 +24,11 @@ public class UserThread implements Runnable {
 		for(int i=0; i<2; i++) {
 			int index=indexes.get((int)(Math.random()*indexes.size()));
 			indexes.remove(new Integer(index));
-			int component=Math.min((int)(Math.random()*255), sum);
+			int component=Math.max(Math.min((int)(Math.random()*255), sum), sum-510);
 			sum-=component;
 			rgb[index]=component;
 		}
-		rgb[indexes.get(0)]=sum;
+		rgb[indexes.get(0)]=Math.max(255, sum);
 		color=new Color(rgb[0], rgb[1], rgb[2]);
 		try {
             this.out = new PrintWriter(this.socket.getOutputStream(), true);
