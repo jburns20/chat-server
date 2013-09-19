@@ -1,4 +1,4 @@
-package com.hw.atcs.chatclient;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +25,7 @@ public class EasySound
     }
     catch (Exception ex)
     {
+    	ex.printStackTrace();
       System.out.println("*** Cannot find " + fileName + " ***");
       System.exit(1);
     }

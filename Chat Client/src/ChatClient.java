@@ -1,4 +1,4 @@
-package com.hw.atcs.chatclient;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JFrame;
