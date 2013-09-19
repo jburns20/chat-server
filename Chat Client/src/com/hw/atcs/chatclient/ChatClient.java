@@ -78,6 +78,11 @@ public class ChatClient extends JFrame implements ActionListener {
     public void listen() {
         String s;
         while ((s = in.readLine()) != null) {
+        	if(s.charAt(0)==(char)7) {
+        		//play sound
+        		new EasySound("chime.wav").play();
+        		s=s.substring(1);
+        	}
             enteredText.setText(enteredText.getText()+s + "\n");
             enteredText.setCaretPosition(enteredText.getText().length());
         }
