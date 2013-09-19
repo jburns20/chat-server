@@ -51,7 +51,8 @@ public class ChatServer {
 			message="<p style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'><strong>" + sender.getName() + ":</strong> " + message + "</p>";
 		}
 		for(UserThread t:this.userThreads) {
-			t.receiveMessage(message);
+			if (t==sender) t.receiveMessage(message);
+			else t.receiveMessage(new String(new char[]{7}) + message);
 		}
 	}
 	
@@ -60,7 +61,7 @@ public class ChatServer {
 		boolean delivered = false;
 		for (UserThread t : this.userThreads) {
 			if (t.getName().toLowerCase().equals(recipient.toLowerCase())) {
-				t.receiveMessage(message1);
+				t.receiveMessage(new String(new char[]{7}) + message1);
 				delivered = true;
 			}
 		}
