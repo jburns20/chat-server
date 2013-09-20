@@ -45,7 +45,9 @@ public class UserThread implements Runnable {
 		do {
 			this.out.println("Enter your nickname to begin.");
 			try {
-				String newName = this.in.readLine().replace(' ', '_');
+				String newName = this.in.readLine();
+				if (newName==null) return;
+				newName = newName.replace(' ', '_');
 				if (!chatServer.nicknameExists(newName)) this.name = newName;
 				else out.println("Someone else is using that nickname. Please try again.");
 			} catch (IOException e) {
