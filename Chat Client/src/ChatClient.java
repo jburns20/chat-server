@@ -1,11 +1,16 @@
 
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.html.HTMLDocument;
 
+import java.io.IOException;
 import java.net.Socket;
 
 public class ChatClient extends JFrame implements ActionListener {
@@ -15,7 +20,7 @@ public class ChatClient extends JFrame implements ActionListener {
 	 */
 	private static final long serialVersionUID = -572467277434891252L;
 	// GUI stuff
-    private JTextPane  enteredText = new JTextPane();
+    private JEditorPane  enteredText = new JEditorPane();
     private JTextField typedText   = new JTextField(32);
 
     // socket for connection to chat server
@@ -28,6 +33,9 @@ public class ChatClient extends JFrame implements ActionListener {
     public ChatClient(String hostName, String port) {
 
         // connect to server
+    	enteredText.setContentType("text/html");
+    	enteredText.setText("<html><body id='BODY'></body></html>");
+    	enteredText.getCaret().setVisible(false);
         try {
             socket = new Socket(hostName, Integer.parseInt(port));
             out    = new Out(socket);
@@ -83,8 +91,14 @@ public class ChatClient extends JFrame implements ActionListener {
         		new EasySound("chime.wav").play();
         		s=s.substring(1);
         	}
-            enteredText.setText(enteredText.getText()+s + "\n");
-            enteredText.setCaretPosition(enteredText.getText().length());
+        	try {
+				((HTMLDocument)enteredText.getDocument()).insertBeforeEnd(((HTMLDocument)enteredText.getDocument()).getElement("BODY"), s + "\n");
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+            //enteredText.setText(enteredText.getText()+s + "\n");
+            //enteredText.setCaretPosition(enteredText.getText().length());
         }
         out.close();
         in.close();
