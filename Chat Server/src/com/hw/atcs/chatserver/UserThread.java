@@ -19,7 +19,7 @@ public class UserThread implements Runnable {
 		socket = s;
 		chatServer=server;
 		int[] rgb=new int[3];
-		int sum=(int)(Math.random()*200)+400;
+		int sum=(int)(Math.random()*200)+200;
 		ArrayList<Integer> indexes=new ArrayList<Integer>(Arrays.asList(0,1,2));
 		for(int i=0; i<2; i++) {
 			int index=indexes.get((int)(Math.random()*indexes.size()));

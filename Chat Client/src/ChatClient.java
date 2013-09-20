@@ -34,7 +34,7 @@ public class ChatClient extends JFrame implements ActionListener {
 
         // connect to server
     	enteredText.setContentType("text/html");
-    	enteredText.setText("<html><body id='BODY'></body></html>");
+    	enteredText.setText("<html><body id='BODY' style='background: white;'></body></html>");
     	enteredText.getCaret().setVisible(false);
         try {
             socket = new Socket(hostName, Integer.parseInt(port));
