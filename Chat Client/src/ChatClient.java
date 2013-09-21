@@ -2,16 +2,12 @@
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.text.BadLocationException;
+import javax.swing.*;
 import javax.swing.text.html.HTMLDocument;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ChatClient extends JFrame implements ActionListener {
 
@@ -31,10 +27,15 @@ public class ChatClient extends JFrame implements ActionListener {
     private In in;
 
     public ChatClient(String hostName, String port) {
-
-        // connect to server
-    	enteredText.setContentType("text/html");
-    	enteredText.setText("<html><body id='BODY' style='background: white;'></body></html>");
+    	String template = "";
+    	try {
+			template = new Scanner(new FileReader("template.html")).useDelimiter("\\Z").next();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+        enteredText.setContentType("text/html");
+    	enteredText.setText(template.toString());
     	enteredText.getCaret().setVisible(false);
         try {
             socket = new Socket(hostName, Integer.parseInt(port));
@@ -98,7 +99,7 @@ public class ChatClient extends JFrame implements ActionListener {
 				System.exit(1);
 			}
             //enteredText.setText(enteredText.getText()+s + "\n");
-            //enteredText.setCaretPosition(enteredText.getText().length());
+            enteredText.setCaretPosition(enteredText.getDocument().getLength());
         }
         out.close();
         in.close();

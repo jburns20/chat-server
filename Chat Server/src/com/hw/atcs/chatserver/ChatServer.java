@@ -46,40 +46,47 @@ public class ChatServer {
 	}
 	
 	public synchronized void sendMessage(UserThread sender, String message) {
+		String everyoneMessage = message;
+		String senderMessage = message;
 		if(sender!=null) {
 			Color c=sender.getColor();
-			message="<p style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'><strong>" + sender.getName() + ":</strong> " + message + "</p>";
+			everyoneMessage = new String(new char[]{7}) + "<p><strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + sender.getName() + ":</strong> " + message + "</p>";
+			senderMessage = "<p class='from-me'><strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + sender.getName() + ":</strong> " + message + "</p>";
 		}
 		for(UserThread t:this.userThreads) {
-			if (t==sender) t.receiveMessage(message);
-			else t.receiveMessage(new String(new char[]{7}) + message);
+			if (t==sender) t.receiveMessage(senderMessage);
+			else t.receiveMessage(everyoneMessage);
 		}
 	}
 	
 	public synchronized void whisperMessage(UserThread sender, String recipient, String message) {
-		String message1 = sender.getName() + " whispers: " + message;
+		Color c=sender.getColor();
+		String message1 = "<p><strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + sender.getName() + "</strong> whispers: " + message + "</p>";
 		boolean delivered = false;
 		for (UserThread t : this.userThreads) {
 			if (t.getName().toLowerCase().equals(recipient.toLowerCase())) {
 				t.receiveMessage(new String(new char[]{7}) + message1);
 				delivered = true;
+				break;
 			}
 		}
 		if (delivered) {
-			sender.receiveMessage("You whisper to " + recipient + ": " + message);
+			sender.receiveMessage("<p class='from-me'>You whisper to <strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + recipient + "</strong>: " + message + "</p>");
 		} else {
-			sender.receiveMessage("There is no user with that nickname.");
+			sender.receiveMessage("<p class='message'>There is no user with that nickname.</p>");
 		}
 	}
 	
 	public synchronized void addUserThread(UserThread thread) {
 		this.userThreads.addLast(thread);
-		sendMessage(null, thread.getName()+" has joined the chat server.");
+		Color c = thread.getColor();
+		sendMessage(null, "<p class='message'><strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + thread.getName()+"</strong> has joined the chat server.</p>");
 	}
 	
 	public synchronized void removeUserThread(UserThread thread) {
 		this.userThreads.remove(thread);
-		sendMessage(null, thread.getName()+" has left.");
+		Color c = thread.getColor();
+		sendMessage(null, "<p class='message'><strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + thread.getName()+"</strong> has left.</p>");
 	}
 	
 	public synchronized boolean nicknameExists(String name) {

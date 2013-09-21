@@ -41,22 +41,23 @@ public class UserThread implements Runnable {
 	}
 	
 	public void run() {
-		this.out.println("Welcome to the Chat Server!");
+		this.out.println("<h1>Welcome to the Chat Server!</h1>");
 		do {
-			this.out.println("Enter your nickname to begin.");
+			this.out.println("<p class='message'>Enter your nickname to begin.</p>");
 			try {
 				String newName = this.in.readLine();
 				if (newName==null) return;
 				newName = newName.replace(' ', '_');
 				if (!chatServer.nicknameExists(newName)) this.name = newName;
-				else out.println("Someone else is using that nickname. Please try again.");
+				else out.println("<p class='message'>Someone else is using that nickname. Please try again.</p>");
 			} catch (IOException e) {
 				e.printStackTrace();
-				out.println("There was a problem reading your nickname. Please try again.");
+				out.println("<p class='message'>There was a problem reading your nickname. Please try again.</p>");
 			}
 		} while (name == null);
 		chatServer.addUserThread(this);
-		this.out.println("Welcome, " + name + "!");
+		Color color = this.getColor();
+		this.out.println("<p class='message'><strong>Welcome, <span style='color: rgb(" + color.getRed() + ", " + color.getGreen() + ", " + color.getBlue() + ");'>" + name + "</span>!</strong></p>");
 		//Extra spacing, etc. for username separation would go here.
 		while (true) {
 			try {
@@ -68,21 +69,21 @@ public class UserThread implements Runnable {
 				else if(message.equals(""))
 					return;
 				else if(message.charAt(0)=='/') {
+					Color c = this.getColor();
 					String command=message.substring(1, message.indexOf(" ")).toLowerCase();
 					if(command.equals("nick")) {
 						String newName=message.substring(command.length()+2).replace(' ', '_');
 						if (!chatServer.nicknameExists(newName)) {
-							chatServer.sendMessage(null, name + " changed their nickname to "+newName+".");
+							chatServer.sendMessage(null, "<p class='message'><strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + name + "</strong> changed their nickname to <strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + newName+"</strong>.</p>");
 							name = newName;
 						} else if (name.equals(newName)) {
-							out.println("You're already using that nickname.");
+							out.println("<p class='message'>You're already using that nickname.</p>");
 						} else {
-							out.println("Someone else is using that nickname. Please try again.");
+							out.println("<p class='message'>Someone else is using that nickname. Please try again.</p>");
 						}
-					}
-					else if(command.equals("disconnect")) {
+					} else if(command.equals("disconnect")) {
 						if(message.indexOf(" ") != -1)
-							chatServer.sendMessage(null, name+" is disconnecting: "+message.substring(command.length()+2));
+							chatServer.sendMessage(null, "<p class='message'><strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + name + "</strong> is disconnecting: "+message.substring(command.length()+2) + "</p>");
 						chatServer.removeUserThread(this);
 						out.close();
 						in.close();
@@ -97,7 +98,7 @@ public class UserThread implements Runnable {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-				System.out.println("There was a problem reading your message. Please try again.");
+				out.println("<p class='message'>There was a problem reading your message. Please try again.</p>");
 			}
 		}
 	}
