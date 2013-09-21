@@ -59,7 +59,7 @@ public class ChatClient extends JFrame implements ActionListener {
 
         // create GUI stuff
         enteredText.setEditable(false);
-        enteredText.setBackground(Color.LIGHT_GRAY);
+        //enteredText.setBackground(Color.LIGHT_GRAY);
         typedText.addActionListener(this);
 
         Container content = getContentPane();
@@ -71,6 +71,8 @@ public class ChatClient extends JFrame implements ActionListener {
         setTitle("Chat Client 1.0: [" + hostName + ":" + port + "]");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
+        setSize(450, 425);
+        this.setLocation(50, 25);
         typedText.requestFocusInWindow();
         setVisible(true);
 
