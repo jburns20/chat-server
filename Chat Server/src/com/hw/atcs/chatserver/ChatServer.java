@@ -60,6 +60,10 @@ public class ChatServer {
 	}
 	
 	public synchronized void whisperMessage(UserThread sender, String recipient, String message) {
+		if(sender.getName().toLowerCase().equals(recipient.toLowerCase())) {
+			sender.receiveMessage("<p class='message'>You can't whisper to yourself!</p>");
+			return;
+		}
 		Color c=sender.getColor();
 		String message1 = "<p><strong style='color: rgb(" + c.getRed() + ", " + c.getGreen() + ", " + c.getBlue() + ");'>" + sender.getName() + "</strong> whispers: " + message + "</p>";
 		boolean delivered = false;
