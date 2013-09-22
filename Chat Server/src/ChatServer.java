@@ -1,5 +1,3 @@
-package com.hw.atcs.chatserver;
-
 import java.util.LinkedList;
 import java.awt.Color;
 import java.io.IOException;

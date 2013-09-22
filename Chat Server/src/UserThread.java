@@ -1,5 +1,3 @@
-package com.hw.atcs.chatserver;
-
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
